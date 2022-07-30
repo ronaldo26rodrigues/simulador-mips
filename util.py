@@ -11,6 +11,16 @@ def desestrutura_r(binario):
     }
     return instrucao
 
+def desestrutura_i(binario):
+    """6 bits - opcode | 5 bits registrador | 5 bits registrador | 16 bits immediate """
+    instrucao = {
+        'opcode': binario[0:6],
+        'rs': binario[6:11],
+        'rt': binario[11:16],
+        'imd': binario[16:32]
+    }
+    return instrucao
+
 def hex2bin(hexa):
     return f"{int(hexa, 16):32b}"
 
