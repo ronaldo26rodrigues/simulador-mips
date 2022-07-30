@@ -22,6 +22,6 @@ def desestrutura_i(binario):
     return instrucao
 
 def hex2bin(hexa):
-    return f"{int(hexa, 16):32b}"
+    return bin(int(hexa, 16))[2:].zfill(32)
 
 print(hex2bin('0x24020004'))

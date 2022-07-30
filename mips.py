@@ -1,5 +1,3 @@
-import json
-
 registradores = {
     0:  '00000000',
     1:  '00000000',
@@ -33,8 +31,13 @@ registradores = {
     29: '00000000',
     30: '00000000',
     31: '00000000',
+    'pc': '00000000',
+    'hi': '00000000',
+    'lo': '00000000',
 }
 
-json_arq = open('teste_mips.json', 'r').read()
+# fazer as instruções aqui
 
-data = json.loads(json_arq)
+instrucoes = {
+
+}
