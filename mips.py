@@ -96,16 +96,17 @@ def subu(rd, rs1, rs2):
     return -1
 
 
-instrucoes = {
+opcode = {
+    '000011': jal,
+}
+
+functions = {
     '100000': add,
-    '100011': subu,
+    '001000': jr,
     '100010': sub,
     '000000': sll,
     '000100': sllv,
     '101010': slt,
-    '000011': jal,
-    '001000': jr
-
-     
+    '100011': subu,
 }
 

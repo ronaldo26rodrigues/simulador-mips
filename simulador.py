@@ -41,13 +41,13 @@ def instructions():
         if opcode[0] == 'R':
             desestruturado = util.desestrutura_r(binario)
             print(desestruturado)
-            indice = mips.instrucoes[opcode[1]](desestruturado['rd'], desestruturado['rs1'], desestruturado['rs2'])
+            indice = mips.functions[opcode[1]](desestruturado['rd'], desestruturado['rs1'], desestruturado['rs2'])
         if opcode[0] == 'J':
             desestruturado = util.desestrutura_j(binario)
-            indice = mips.instrucoes[opcode[1]](desestruturado['jta'])
+            indice = mips.opcode[opcode[1]](desestruturado['jta'])
         if opcode[0] == 'I':
             desestruturado = util.desestrutura_i(binario)
-            indice = mips.instrucoes[opcode[1]](desestruturado['rs'], desestruturado['rt'], desestruturado['imd'])
+            indice = mips.opcode[opcode[1]](desestruturado['rs'], desestruturado['rt'], desestruturado['imd'])
         instruction += 1
         if indice >= 0:
             instruction = indice
