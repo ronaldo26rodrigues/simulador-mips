@@ -21,6 +21,14 @@ def desestrutura_i(binario):
     }
     return instrucao
 
+    def desestrutura_j(binario):
+        """6 bits - opcode | 26 bits Jump """
+        instrucao = {
+            'opcode': binario[0:6],
+            'jta': binario[6:32]
+        }
+    return instrucao
+
 def hex2bin(hexa):
     return bin(int(hexa, 16))[2:].zfill(32)
 
