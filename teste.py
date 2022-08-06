@@ -1,5 +1,2 @@
-c = 0
-while True:
-    c+=1
-    if c == 8:
-        c = 0
+print(eval("~0b1010 & ~0b0110"))
+print('10110'.zfill(32))

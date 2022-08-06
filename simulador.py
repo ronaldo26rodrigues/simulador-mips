@@ -49,7 +49,7 @@ def instructions():
             desestruturado = util.desestrutura_i(binario)
             indice = mips.opcode[opcode[1]](desestruturado['rs'], desestruturado['rt'], desestruturado['imd'])
         instruction += 1
-        if indice >= 0:
+        if indice is not None:
             instruction = indice
         # print(util.hex2bin(instruction))
 
