@@ -48,10 +48,68 @@ def add(rd, rs1, rs2):
     registradores[rd] = registradores[rs1] + registradores[rs2]
     return -1
 
+def sub(rd, rs1, rs2):
+    rd = util.bin2dec(rd)
+    rs1 = util.bin2dec(rs1)
+    rs2 = util.bin2dec(rs2)
+    registradores[rd] = registradores[rs1] - registradores[rs2]
+    return -1
 
+def sll(rd, rs1, rs2):
+    rd = util.bin2dec(rd)
+    rs1 = util.bin2dec(rs1)
+    rs2 = util.bin2dec(rs2)
+    registradores[rd] = registradores[rs1] << registradores[rs2]
+    return -1
 
+def sllv(rd, rs1, rs2):
+    rd = util.bin2dec(rd)
+    rs1 = util.bin2dec(rs1)
+    rs2 = util.bin2dec(rs2)
+    registradores[rd] = registradores[rs1] << registradores[rs2]
+    return -1
 
+def slt(rd, rs1, rs2):
+    rd = util.bin2dec(rd)
+    rs1 = util.bin2dec(rs1)
+    rs2 = util.bin2dec(rs2)
+    if registradores[rs2] < [rs2]:
+     registradores[rd] = 1
+    return -1
+
+def subu(rd, rs1, rs2):
+    rd = util.bin2dec(rd)
+    rs1 = util.bin2dec(rs1)
+    rs2 = util.bin2dec(rs2)
+    registradores[rd] = registradores[rs1] - registradores[rs2]
+    return -1
 
 instrucoes = {
     '100000': add
+     
+}
+
+instrucoes = {
+    '100010': sub
+     
+}
+
+instrucoes = {
+    '000000': sll
+     
+}
+
+instrucoes = {
+    '000100': sllv
+     
+}
+
+instrucoes = {
+    '101010': slt
+     
+}
+
+instrucoes = {
+    '100011': subu
+     
 }
