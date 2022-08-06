@@ -3,9 +3,9 @@ def desestrutura_r(binario):
     function """
     instrucao = {
         'opcode': binario[0:6],
-        'rd': binario[6:11],
+        'rs2': binario[6:11],
         'rs1': binario[11:16],
-        'rs2': binario[16:21],
+        'rd': binario[16:21],
         'sa': binario[21:26],
         'fn': binario[26:32]
     }
@@ -32,6 +32,9 @@ def desestrutura_j(binario):
 def hex2bin(hexa):
     return bin(int(hexa, 16))[2:].zfill(32)
 
+def bin2dec(binario):
+    return int(binario, 2)
+
 def get_instruction(bin):
     if bin[0:6] == '000000':
         return 'R', bin[26:32]
@@ -39,3 +42,5 @@ def get_instruction(bin):
         return 'J', bin[0:6]
     else:
         return 'I', bin[0:6]
+
+print(bin2dec('1001'))

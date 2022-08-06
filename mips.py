@@ -1,3 +1,5 @@
+import util
+
 registradores = {
     0:  '00000000',
     1:  '00000000',
@@ -38,8 +40,18 @@ registradores = {
 
 # fazer as instruções aqui
 
+
+def add(rd, rs1, rs2):
+    rd = util.bin2dec(rd)
+    rs1 = util.bin2dec(rs1)
+    rs2 = util.bin2dec(rs2)
+    registradores[rd] = registradores[rs1] + registradores[rs2]
+    return -1
+
+
+
+
+
 instrucoes = {
-
+    '100000': add
 }
-
-
