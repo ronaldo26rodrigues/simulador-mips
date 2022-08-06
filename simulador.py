@@ -37,6 +37,7 @@ def instructions():
         binario = util.hex2bin(instructions[instruction])
         opcode = util.get_instruction(binario)
         indice = instruction
+        mips.registradores['pc'] = instruction
         if opcode[0] == 'R':
             desestruturado = util.desestrutura_r(binario)
             print(desestruturado)

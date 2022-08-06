@@ -49,7 +49,13 @@ def add(rd, rs1, rs2):
     return -1
 
 
+def jal(jta):
+    registradores['ra'] = registradores['pc'] + 1
+    return util.address2index(jta)
 
+
+def jr(rd, rs1, rs2):
+    return registradores[rs2]
 
 
 instrucoes = {

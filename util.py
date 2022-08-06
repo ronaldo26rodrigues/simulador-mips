@@ -43,4 +43,7 @@ def get_instruction(bin):
     else:
         return 'I', bin[0:6]
 
-print(bin2dec('1001'))
+
+def address2index(binario):
+    binario = binario[8:] + '00'
+    return int(int(binario, 2)/4)-1
