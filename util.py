@@ -24,4 +24,10 @@ def desestrutura_i(binario):
 def hex2bin(hexa):
     return bin(int(hexa, 16))[2:].zfill(32)
 
-print(hex2bin('0x24020004'))
+def get_instruction(bin):
+    if bin[0:6] == '000000':
+        return 'R', bin[26:32]
+    elif bin[0:6] == '000010' or bin[0:6] == '000011':
+        return 'J', bin[0:6]
+    else:
+        return 'I', bin[0:6]
