@@ -48,16 +48,64 @@ def add(rd, rs1, rs2):
     registradores[rd] = registradores[rs1] + registradores[rs2]
     return -1
 
+def sub(rd, rs1, rs2):
+    rd = util.bin2dec(rd)
+    rs1 = util.bin2dec(rs1)
+    rs2 = util.bin2dec(rs2)
+    registradores[rd] = registradores[rs1] - registradores[rs2]
+    return -1
+
 
 def jal(jta):
     registradores['ra'] = registradores['pc'] + 1
     return util.address2index(jta)
+
+def sll(rd, rs1, rs2):
+    rd = util.bin2dec(rd)
+    rs1 = util.bin2dec(rs1)
+    rs2 = util.bin2dec(rs2)
+    registradores[rd] = registradores[rs1] << registradores[rs2]
+    return -1
+
+
+def sllv(rd, rs1, rs2):
+    rd = util.bin2dec(rd)
+    rs1 = util.bin2dec(rs1)
+    rs2 = util.bin2dec(rs2)
+    registradores[rd] = registradores[rs1] << registradores[rs2]
+    return -1
 
 
 def jr(rd, rs1, rs2):
     return registradores[rs2]
 
 
+def slt(rd, rs1, rs2):
+    rd = util.bin2dec(rd)
+    rs1 = util.bin2dec(rs1)
+    rs2 = util.bin2dec(rs2)
+    if registradores[rs2] < [rs2]:
+     registradores[rd] = 1
+    return -1
+
+def subu(rd, rs1, rs2):
+    rd = util.bin2dec(rd)
+    rs1 = util.bin2dec(rs1)
+    rs2 = util.bin2dec(rs2)
+    registradores[rd] = registradores[rs1] - registradores[rs2]
+    return -1
+
+
 instrucoes = {
-    '100000': add
+    '100000': add,
+    '100011': subu,
+    '100010': sub,
+    '000000': sll,
+    '000100': sllv,
+    '101010': slt,
+    '000011': jal,
+    '001000': jr
+
+     
 }
+
