@@ -1,7 +1,7 @@
 import util
 
 registradores = {
-    0:  '00000000',
+    0:  0,
     1:  '00000000',
     2:  '00000000',
     3:  '00000000',
@@ -38,6 +38,10 @@ registradores = {
     'lo': '00000000',
 }
 
+memoria = {
+
+}
+
 # fazer as instruções aqui
 
 
@@ -53,7 +57,8 @@ def addi(rs, rt, imd):
     rs = util.bin2dec(rs)
     rt = util.bin2dec(rt)
     imd = util.bin2dec(imd)
-    registradores[rs] = registradores[rt] + registradores[imd]
+    print(rs, rt, imd)
+    registradores[rt] = registradores[rs] + imd
     return None
 
 
@@ -61,7 +66,7 @@ def addiu(rs, rt, imd):
     rs = util.bin2dec(rs)
     rt = util.bin2dec(rt)
     imd = util.bin2dec(imd)
-    registradores[rs] = registradores[rt] + registradores[imd]
+    registradores[rs] = registradores[rt] + imd
     return None
 
 
@@ -101,7 +106,9 @@ def beq(rs, rt, imd):
     rs = util.bin2dec(rs)
     rt = util.bin2dec(rt)
     imd = util.bin2dec(imd)
-    if registradores[rs] == registradores[rt] : return registradores['pc'] + registradores[imd]
+    print(registradores[rs], registradores[rt], imd, registradores['pc']+imd)
+    if registradores[rs] == registradores[rt]:
+        return registradores['pc'] + imd + 1
     return None
 
 
@@ -157,8 +164,8 @@ def sub(rd, rs1, rs2):
 
 
 def jal(jta):
-    registradores['ra'] = registradores['pc'] + 1
-    return util.address2index(jta)
+    registradores[31] = registradores['pc'] + 1
+    return util.address2index(jta)+1
 
 
 def sll(rd, rs1, rs2):
@@ -242,9 +249,9 @@ def m_or(rd, rs1, rs2):
 
 
 def ori(rs, rt, imd):
-    rd = util.bin2dec(rs)
-    rs1 = util.bin2dec(rt)
-    registradores[rs] = (eval(bin(registradores[rt]).zfill(32) + "|" + imd))
+    rs = util.bin2dec(rs)
+    rt = util.bin2dec(rt)
+    registradores[rt] = (eval(bin(registradores[rs]) + " | " + imd))
     return None
 
 
@@ -252,14 +259,14 @@ def nor(rd, rs1, rs2):
     rd = util.bin2dec(rd)
     rs1 = util.bin2dec(rs1)
     rs2 = util.bin2dec(rs2)
-    registradores[rd] = (eval("~"+bin(registradores[rs1]).zfill(32) + "& ~" + bin(registradores[rs2]).zfill(32)))
+    registradores[rd] = (eval("~"+bin(registradores[rs1]) + " & ~" + bin(registradores[rs2])))
 
 
 def xor(rd, rs1, rs2):
     rd = util.bin2dec(rd)
     rs1 = util.bin2dec(rs1)
     rs2 = util.bin2dec(rs2)
-    registradores[rd] = (eval(bin(registradores[rs1]).zfill(32) +  '^' +  bin(registradores[rs2]).zfill(32)))
+    registradores[rd] = (eval(bin(registradores[rs1]) + '^' + bin(registradores[rs2])))
     return None
 
 
@@ -268,6 +275,40 @@ def xori(rs, rt, imd):
     rt = util.bin2dec(rt)
     imd = util.bin2dec(imd)
     registradores[rs] = (eval(bin(registradores[rt]).zfill(32) +  '^' +  bin(registradores[imd]).zfill(32)))
+    return None
+
+
+def lui(rs, rt, imd):
+    rs = util.bin2dec(rs)
+    rt = util.bin2dec(rt)
+    imd = util.bin2dec(imd + '0'*(32-len(imd)))
+    registradores[1] = imd
+    return None
+
+
+def lw(rs, rt, imd):
+    rs = util.bin2dec(rs)
+    rt = util.bin2dec(rt)
+    imd = util.bin2dec(imd)
+    registradores[rt] = memoria[str(registradores[rs]+imd)]
+    return None
+
+
+def lb(rs, rt, imd):
+    rs = util.bin2dec(rs)
+    rt = util.bin2dec(rt)
+    imd = util.bin2dec(imd)
+    b = memoria[str(registradores[rs]+imd)]
+    registradores[rt] = b[0]*(32-len(b)) + b
+    return None
+
+
+def lbu(rs, rt, imd):
+    rs = util.bin2dec(rs)
+    rt = util.bin2dec(rt)
+    imd = util.bin2dec(imd)
+    b = memoria[str(registradores[rs]+imd)]
+    registradores[rt] = '0'*(32-len(b)) + b
     return None
 
 
@@ -283,7 +324,11 @@ opcode = {
     '000010': j,
     '000011': jal,
     '001101': ori,
-    '001110': xori
+    '001110': xori,
+    '001111': lui,
+    '100011': lw,
+    '100000': lb,
+    '100100': lbu
 }
 
 functions = {

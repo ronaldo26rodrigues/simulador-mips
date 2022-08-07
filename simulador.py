@@ -25,7 +25,10 @@ def config_mem():
 
 # TODO: logica de configurar .data
 def config_data():
-    pass
+    d = data['data']
+    for dt in d:
+        mips.memoria[dt] = d[dt]
+    print(mips.memoria)
 
 
 # TODO: logica de executar instruções
@@ -35,6 +38,7 @@ def instructions():
     instruction = 0
     while instruction < len(instructions):
         binario = util.hex2bin(instructions[instruction])
+        print(mips.registradores)
         opcode = util.get_instruction(binario)
         indice = instruction
         mips.registradores['pc'] = instruction
