@@ -365,6 +365,14 @@ def lbu(rs, rt, imd):
     return None
 
 
+def sb(rs, rt, imd):
+    rs = util.bin2dec(rs)
+    rt = util.bin2dec(rt)
+    imd = util.bin2dec(imd)
+    memoria[str(registradores[rs]+imd)] = registradores[rt]
+    return None
+
+
 opcode = {
     '001000': addi,
     '001001': addiu,
@@ -382,8 +390,8 @@ opcode = {
     '100011': lw,
     '100000': lb,
     '100100': lbu,
-    '101011':sw,
-
+    '101011': sw,
+    '001010': slti
 }
 
 functions = {
@@ -406,7 +414,7 @@ functions = {
     '011001': multu,
     '100110': xor,
     '000011':sra,
-    '000111':sra,
+    '000111':srav,
     '000010':srl,
     '000110':srlv
     
