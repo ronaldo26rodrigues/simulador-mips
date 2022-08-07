@@ -208,7 +208,7 @@ def sra(rd, rs1, rs2):
     rd = util.bin2dec(rd)
     rs1 = util.bin2dec(rs1)
     rs2 = util.bin2dec(rs2)
-    if registradores[rs2] >> [rs2]:
+    if registradores[rs2] > [rs1]:
         registradores[rd] = 1
     return None
 
@@ -253,13 +253,12 @@ def subu(rd, rs1, rs2):
     registradores[rd] = registradores[rs1] - registradores[rs2]
     return None
 
-
-def sw(rd, rs1, rs2):
-    rd = util.bin2dec(rd)
-    rs1 = util.bin2dec(rs1)
-    rs2 = util.bin2dec(rs2)
-    registradores[rd] = registradores[rs1] + 10
-
+def sw(rs, rt, imd):
+    rs = util.bin2dec(rs)
+    rt = 0
+    imd = util.bin2dec(imd)
+    registradores[rs] = registradores[rt] + 10
+    return None
 
 def mult(rd, rs1, rs2):
     rd = util.bin2dec(rd)
@@ -267,7 +266,6 @@ def mult(rd, rs1, rs2):
     rs2 = util.bin2dec(rs2)
     registradores['lo'] = registradores[rd] * registradores[rs1]
     return None
-
 
 def multu(rd, rs1, rs2):
     rd = util.bin2dec(rd)
