@@ -151,16 +151,9 @@ def divu(rs1, rs2):
     registradores['lo'] = registradores[rs1] // registradores[rs2]
     return None
 
+
 def j(jta):
     return util.address2index(jta)
-
-
-def sub(rd, rs1, rs2):
-    rd = util.bin2dec(rd)
-    rs1 = util.bin2dec(rs1)
-    rs2 = util.bin2dec(rs2)
-    registradores[rd] = registradores[rs1] - registradores[rs2]
-    return None
 
 
 def jal(jta):
@@ -172,7 +165,7 @@ def sll(rd, rs1, rs2):
     rd = util.bin2dec(rd)
     rs1 = util.bin2dec(rs1)
     rs2 = util.bin2dec(rs2)
-    registradores[rd] = registradores[rs1] << registradores[rs2]
+    registradores[rd] = registradores[rs1] >> registradores[rs2]
     return None
 
 
@@ -180,7 +173,7 @@ def sllv(rd, rs1, rs2):
     rd = util.bin2dec(rd)
     rs1 = util.bin2dec(rs1)
     rs2 = util.bin2dec(rs2)
-    registradores[rd] = registradores[rs1] << registradores[rs2]
+    registradores[rd] = registradores[rs1] >> registradores[rs2]
     return None
 
 
@@ -200,12 +193,72 @@ def slt(rd, rs1, rs2):
     return None
 
 
+def slti(rs, rt, imd):
+    rs = util.bin2dec(rs)
+    rt = 0
+    imd = util.bin2dec(imd)
+    if registradores[rt] < [imd]:
+        registradores[rs] = 1
+    else:
+        registradores[rs] = 0
+    return None
+
+
+def sra(rd, rs1, rs2):
+    rd = util.bin2dec(rd)
+    rs1 = util.bin2dec(rs1)
+    rs2 = util.bin2dec(rs2)
+    if registradores[rs2] >> [rs2]:
+        registradores[rd] = 1
+    return None
+
+
+def srav(rd, rs1, rs2):
+    rd = util.bin2dec(rd)
+    rs1 = util.bin2dec(rs1)
+    rs2 = util.bin2dec(rs2)
+    if registradores[rs2] >> [rs2]:
+        registradores[rd] = 1
+    return None
+
+
+def srl(rd, rs1, rs2):
+    rd = util.bin2dec(rd)
+    rs1 = util.bin2dec(rs1)
+    rs2 = util.bin2dec(rs2)
+    registradores[rd] = registradores[rs1] << registradores[rs2]
+    return None
+
+
+def srlv(rd, rs1, rs2):
+    rd = util.bin2dec(rd)
+    rs1 = util.bin2dec(rs1)
+    rs2 = util.bin2dec(rs2)
+    registradores[rd] = registradores[rs1] >> registradores[rs2]
+    return None
+
+
+def sub(rd, rs1, rs2):
+    rd = util.bin2dec(rd)
+    rs1 = util.bin2dec(rs1)
+    rs2 = util.bin2dec(rs2)
+    registradores[rd] = registradores[rs1] - registradores[rs2]
+    return None
+
+
 def subu(rd, rs1, rs2):
     rd = util.bin2dec(rd)
     rs1 = util.bin2dec(rs1)
     rs2 = util.bin2dec(rs2)
     registradores[rd] = registradores[rs1] - registradores[rs2]
     return None
+
+
+def sw(rd, rs1, rs2):
+    rd = util.bin2dec(rd)
+    rs1 = util.bin2dec(rs1)
+    rs2 = util.bin2dec(rs2)
+    registradores[rd] = registradores[rs1] + 10
 
 
 def mult(rd, rs1, rs2):
@@ -328,7 +381,9 @@ opcode = {
     '001111': lui,
     '100011': lw,
     '100000': lb,
-    '100100': lbu
+    '100100': lbu,
+    '101011':sw,
+
 }
 
 functions = {
@@ -349,6 +404,11 @@ functions = {
     '100111': nor,
     '100101': m_or,
     '011001': multu,
-    '100110': xor
+    '100110': xor,
+    '000011':sra,
+    '000111':sra,
+    '000010':srl,
+    '000110':srlv
+    
 }
 
