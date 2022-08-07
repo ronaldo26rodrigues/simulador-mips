@@ -212,7 +212,6 @@ def sra(rd, rs1, rs2):
         registradores[rd] = 1
     return None
 
-
 def srav(rd, rs1, rs2):
     rd = util.bin2dec(rd)
     rs1 = util.bin2dec(rs1)
