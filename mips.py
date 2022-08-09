@@ -208,7 +208,7 @@ def sra(rd, rs1, rs2):
     rd = util.bin2dec(rd)
     rs1 = util.bin2dec(rs1)
     rs2 = util.bin2dec(rs2)
-    if registradores[rs2] > [rs1]:
+    if registradores[rs2] > registradores[rs1]:
         registradores[rd] = 1
     return None
 
@@ -370,6 +370,25 @@ def sb(rs, rt, imd):
     return None
 
 
+def syscall(int):
+    syscalls[registradores[2]]()
+
+
+def print_integer():
+    print(int(registradores[4]))
+
+
+def read_integer():
+    registradores[2] = int(input())
+
+
+
+
+syscalls = {
+ 1: print_integer
+}
+
+
 opcode = {
     '001000': addi,
     '001001': addiu,
@@ -410,10 +429,10 @@ functions = {
     '100101': m_or,
     '011001': multu,
     '100110': xor,
-    '000011':sra,
-    '000111':srav,
-    '000010':srl,
-    '000110':srlv
+    '000011': sra,
+    '000111': srav,
+    '000010': srl,
+    '000110': srlv
     
 }
 
