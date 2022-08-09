@@ -1,3 +1,4 @@
+from ast import Pass
 import util
 
 registradores = {
@@ -381,9 +382,15 @@ def print_integer():
 def read_integer():
     registradores[2] = int(input())
 
+def read_char():
+    registradores[2] = Pass
 
+def print_char():
+    print(Pass(registradores[4]))
 
-
+def print_double():
+    print(Pass(registradores[12]))
+    
 syscalls = {
  1: print_integer
 }
