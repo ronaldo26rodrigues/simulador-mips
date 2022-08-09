@@ -4,3 +4,5 @@ string = "00616c6f"
 byte_array = bytearray.fromhex(string)
 byte_array.decode()
 print(byte_array.decode()[::-1])
+print(string[2:])
+print(str(hex(int("1634627442")))[2:])

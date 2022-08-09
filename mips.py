@@ -66,7 +66,7 @@ def addiu(rs, rt, imd):
     rs = util.bin2dec(rs)
     rt = util.bin2dec(rt)
     imd = util.bin2dec(imd)
-    registradores[rs] = registradores[rt] + imd
+    registradores[rt] = int(registradores[rs]) + int(imd)
     return None
 
 
@@ -370,22 +370,39 @@ def sb(rs, rt, imd):
     return None
 
 
-def syscall(int):
+def syscall(a, b, c):
     syscalls[registradores[2]]()
-
+    return None
 
 def print_integer():
     print(int(registradores[4]))
-
+    return None
 
 def read_integer():
     registradores[2] = int(input())
+    return None
+
+def read_memory():
+    txt = ''
+    r = registradores[4]
+    offset = 0
+    atual = ''
+    while '00' not in atual:
+        atual = util.dec2hex(memoria[str(int(r + offset))])
+        txt += util.hex2ascii(atual)
+        offset += 4
+        atual = util.dec2hex(memoria[str(int(r + offset))])
+    txt += util.hex2ascii(atual[(str(atual).rfind('0') + 1):])
+    return txt
 
 
-
+def print_string():
+    print(read_memory())
+    return None
 
 syscalls = {
- 1: print_integer
+    1: print_integer,
+    4: print_string
 }
 
 
@@ -432,7 +449,8 @@ functions = {
     '000011': sra,
     '000111': srav,
     '000010': srl,
-    '000110': srlv
+    '000110': srlv,
+    '001100': syscall
     
 }
 
