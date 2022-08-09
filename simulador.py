@@ -38,13 +38,11 @@ def instructions():
     instruction = 0
     while instruction < len(instructions):
         binario = util.hex2bin(instructions[instruction])
-        print(mips.registradores)
         opcode = util.get_instruction(binario)
         indice = instruction
         mips.registradores['pc'] = instruction
         if opcode[0] == 'R':
             desestruturado = util.desestrutura_r(binario)
-            print(desestruturado)
             indice = mips.functions[opcode[1]](desestruturado['rd'], desestruturado['rs1'], desestruturado['rs2'])
         if opcode[0] == 'J':
             desestruturado = util.desestrutura_j(binario)
@@ -55,7 +53,8 @@ def instructions():
         instruction += 1
         if indice is not None:
             instruction = indice
-        # print(util.hex2bin(instruction))
+    print(mips.registradores)
+    print(mips.memoria)
 
 
 def execute():
@@ -67,4 +66,3 @@ def execute():
 
 
 execute()
-print(mips.registradores)

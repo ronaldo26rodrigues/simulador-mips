@@ -1,3 +1,4 @@
+import codecs
 import sys
 
 import util
@@ -155,7 +156,7 @@ def divu(rs1, rs2):
 
 
 def j(jta):
-    return util.address2index(jta)
+    return util.address2index(jta)+1
 
 
 def jal(jta):
@@ -303,7 +304,7 @@ def m_or(rd, rs1, rs2):
 def ori(rs, rt, imd):
     rs = util.bin2dec(rs)
     rt = util.bin2dec(rt)
-    registradores[rt] = (eval(bin(registradores[rs]) + " | " + imd))
+    registradores[rt] = (eval(str(bin(registradores[rs])) + " | 0b" + imd))
     return None
 
 
@@ -399,7 +400,15 @@ def read_memory(x):
 
 
 def print_string():
-    print(read_memory())
+    print(read_memory(1))
+    return None
+
+
+def read_string():
+    string = input()
+    while len(string) > 0:
+        memoria[int(list(memoria)[len(memoria)-1])+4] = codecs.encode(bytes(string[:4], 'utf-8'), "hex").zfill(8)
+        string = string[4:]
     return None
 
 
@@ -427,7 +436,8 @@ syscalls = {
     4: print_string,
     10: exit_program,
     14: close_file,
-    13: open_file
+    13: open_file,
+    8: read_string
 }
 
 
