@@ -1,3 +1,5 @@
+import sys
+
 import util
 
 registradores = {
@@ -382,9 +384,9 @@ def read_integer():
     registradores[2] = int(input())
     return None
 
-def read_memory():
+def read_memory(x):
     txt = ''
-    r = registradores[4]
+    r = registradores[x]
     offset = 0
     atual = ''
     while '00' not in atual:
@@ -400,9 +402,32 @@ def print_string():
     print(read_memory())
     return None
 
+
+def exit_program():
+    return sys.exit
+
+
+def open_file():
+    x = read_memory(4)
+    try:
+        open(x)
+        registradores[2] = open(x)
+    except:
+        registradores[2]= -1
+
+
+def close_file():
+    registradores[2].close()
+
+
+
+
 syscalls = {
     1: print_integer,
-    4: print_string
+    4: print_string,
+    10: exit_program,
+    14: close_file,
+    13: open_file
 }
 
 
