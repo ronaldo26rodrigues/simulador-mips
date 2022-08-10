@@ -400,15 +400,27 @@ def read_memory(x):
 
 
 def print_string():
-    print(read_memory(1))
+    print(memoria)
+    print(read_memory(4))
     return None
 
 
+def find_available_memory():
+    disponivel = '268500992'
+    while memoria[disponivel] != 0:
+        disponivel = str(int(disponivel)+4)
+    return disponivel
+
+
 def read_string():
-    string = input()
+    string = input()[:registradores[5]-1]
+    print(registradores[5])
+    offset = 0
+    disponivel = registradores[4]
     while len(string) > 0:
-        memoria[int(list(memoria)[len(memoria)-1])+4] = codecs.encode(bytes(string[:4], 'utf-8'), "hex").zfill(8)
+        memoria[str(disponivel+offset)] = int(codecs.encode(bytes(string[:4][::-1], 'utf-8'), "hex").zfill(8), 16)
         string = string[4:]
+        offset+=4
     return None
 
 

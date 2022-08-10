@@ -19,9 +19,12 @@ a = {
     "268501004": 1702193001,
     "268501008": 115
 }
-t = 'ronaldo rodrigues'
+t = 'rodrigues\n'
+print(t[:4][::-1])
 while len(t) > 0:
-    print(codecs.encode(bytes(t[:4], 'utf-8'), "hex").zfill(8))
+    print(t[:4][::-1])
+    print(int(codecs.encode(bytes(t[:4][::-1], 'utf-8'), "hex").zfill(8), 16))
     t = t[4:]
+
 
 print(int(list(a)[len(a)-1]))
