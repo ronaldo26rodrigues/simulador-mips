@@ -424,6 +424,18 @@ def read_string():
     return None
 
 
+def read_char():
+    char = input()
+    registradores[2] = util.ascii2hex(char)
+    return None
+
+
+def print_char():
+    print(util.hex2ascii(registradores[4])
+    return None
+
+
+
 def exit_program():
     return sys.exit
 
@@ -450,6 +462,8 @@ syscalls = {
     14: close_file,
     13: open_file,
     8: read_string
+    12: read_char,
+    11: print_char
 }
 
 
