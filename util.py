@@ -1,6 +1,3 @@
-import codecs
-
-
 def desestrutura_r(binario):
     """6 bits - opcode | 5 bits registrador | 5 bits registrador | 5 bits registrador | 5 bits shitf amount | 6 bits
     function """
@@ -60,8 +57,3 @@ def hex2ascii(hexa):
     byte_array = bytearray.fromhex(hexa)
     byte_array.decode()
     return byte_array.decode()[::-1]
-
-
-def ascii2hex(source):
-    return hex(ord(source))
-
