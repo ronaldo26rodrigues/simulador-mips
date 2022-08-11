@@ -8,6 +8,8 @@ data = json.loads(json_arq)
 
 print(data)
 
+outfile = open('saida.json', 'a')
+
 
 def config_regs():
     regs = data['config']['regs']
@@ -50,11 +52,15 @@ def instructions():
         if opcode[0] == 'I':
             desestruturado = util.desestrutura_i(binario)
             indice = mips.opcode[opcode[1]](desestruturado['rs'], desestruturado['rt'], desestruturado['imd'])
+        json_d = json.dumps(out(instructions[instruction]), indent=4)
+        outfile.write(',\n'+json_d)
         instruction += 1
+
         if indice is not None:
             instruction = indice
     print(mips.registradores)
     print(mips.memoria)
+
 
 
 def execute():
@@ -63,6 +69,17 @@ def execute():
     config_mem()
     print(mips.registradores)
     instructions()
+
+
+def out(hexa):
+    return {
+        "hex": hexa,
+        "text": "",
+        "regs": {'$'+str(x): v for x, v in mips.registradores.items() if v != 0 and v != "00000000"},
+        "mem": {x: v for x, v in mips.memoria.items() if v != 0 and v != "00000000"},
+        "stdout": ""
+
+    }
 
 
 execute()

@@ -400,7 +400,6 @@ def read_memory(x):
 
 
 def print_string():
-    print(memoria)
     print(read_memory(4))
     return None
 
@@ -414,7 +413,6 @@ def find_available_memory():
 
 def read_string():
     string = input()[:registradores[5]-1]
-    print(registradores[5])
     offset = 0
     disponivel = registradores[4]
     while len(string) > 0:
