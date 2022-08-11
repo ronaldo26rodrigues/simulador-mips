@@ -47,3 +47,17 @@ def get_instruction(bin):
 def address2index(binario):
     binario = binario[8:] + '00'
     return int(int(binario, 2)/4)-1
+
+
+def dec2hex(dec):
+    return str(hex(int(dec)))[2:].zfill(8)
+
+
+def hex2ascii(hexa):
+    byte_array = bytearray.fromhex(hexa)
+    byte_array.decode()
+    return byte_array.decode()[::-1]
+
+
+def ascii2hex(source):
+    return hex(ord(source))

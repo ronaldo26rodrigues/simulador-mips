@@ -1,4 +1,6 @@
 from ast import Pass
+import codecs
+import sys
 import util
 
 registradores = {
@@ -67,7 +69,7 @@ def addiu(rs, rt, imd):
     rs = util.bin2dec(rs)
     rt = util.bin2dec(rt)
     imd = util.bin2dec(imd)
-    registradores[rs] = registradores[rt] + imd
+    registradores[rt] = int(registradores[rs]) + int(imd)
     return None
 
 
@@ -154,7 +156,7 @@ def divu(rs1, rs2):
 
 
 def j(jta):
-    return util.address2index(jta)
+    return util.address2index(jta)+1
 
 
 def jal(jta):
@@ -217,7 +219,7 @@ def srav(rd, rs1, rs2):
     rd = util.bin2dec(rd)
     rs1 = util.bin2dec(rs1)
     rs2 = util.bin2dec(rs2)
-    if registradores[rs2] >> [rs2]:
+    if registradores[rs2] >> registradores[rs1]:
         registradores[rd] = 1
     return None
 
@@ -302,7 +304,7 @@ def m_or(rd, rs1, rs2):
 def ori(rs, rt, imd):
     rs = util.bin2dec(rs)
     rt = util.bin2dec(rt)
-    registradores[rt] = (eval(bin(registradores[rs]) + " | " + imd))
+    registradores[rt] = (eval(str(bin(registradores[rs])) + " | 0b" + imd))
     return None
 
 
@@ -371,16 +373,81 @@ def sb(rs, rt, imd):
     return None
 
 
-def syscall(int):
+def syscall(a, b, c):
     syscalls[registradores[2]]()
-
+    return None
 
 def print_integer():
     print(int(registradores[4]))
-
+    return None
 
 def read_integer():
     registradores[2] = int(input())
+    return None
+
+def read_memory(x):
+    txt = ''
+    r = registradores[x]
+    offset = 0
+    atual = ''
+    while '00' not in atual:
+        atual = util.dec2hex(memoria[str(int(r + offset))])
+        txt += util.hex2ascii(atual)
+        offset += 4
+        atual = util.dec2hex(memoria[str(int(r + offset))])
+    txt += util.hex2ascii(atual[(str(atual).rfind('0') + 1):])
+    return txt
+
+
+def print_string():
+    print(read_memory(4))
+    return None
+
+
+def find_available_memory():
+    disponivel = '268500992'
+    while memoria[disponivel] != 0:
+        disponivel = str(int(disponivel)+4)
+    return disponivel
+
+
+def read_string():
+    string = input()[:registradores[5]-1]
+    offset = 0
+    disponivel = registradores[4]
+    while len(string) > 0:
+        memoria[str(disponivel+offset)] = int(codecs.encode(bytes(string[:4][::-1], 'utf-8'), "hex").zfill(8), 16)
+        string = string[4:]
+        offset+=4
+    return None
+
+
+def read_char():
+    char = input()
+    registradores[2] = util.ascii2hex(char)
+    return None
+
+
+def print_char():
+    print(util.hex2ascii(registradores[4]))
+    return None
+
+
+def exit_program():
+    return sys.exit
+
+
+def open_file():
+    x = read_memory(4)
+    try:
+        open(x)
+        registradores[2] = open(x)
+    except:
+        registradores[2]= -1
+
+
+def close_file():
+    registradores[2].close()
 
 def read_char():
     registradores[2] = Pass
@@ -392,7 +459,14 @@ def print_double():
     print(Pass(registradores[12]))
     
 syscalls = {
- 1: print_integer
+    1: print_integer,
+    4: print_string,
+    10: exit_program,
+    14: close_file,
+    13: open_file,
+    8: read_string,
+    12: read_char,
+    11: print_char
 }
 
 
@@ -439,7 +513,8 @@ functions = {
     '000011': sra,
     '000111': srav,
     '000010': srl,
-    '000110': srlv
+    '000110': srlv,
+    '001100': syscall
     
 }
 

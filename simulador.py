@@ -8,6 +8,8 @@ data = json.loads(json_arq)
 
 print(data)
 
+outfile = open('saida.json', 'a')
+
 
 def config_regs():
     regs = data['config']['regs']
@@ -38,13 +40,11 @@ def instructions():
     instruction = 0
     while instruction < len(instructions):
         binario = util.hex2bin(instructions[instruction])
-        print(mips.registradores)
         opcode = util.get_instruction(binario)
         indice = instruction
         mips.registradores['pc'] = instruction
         if opcode[0] == 'R':
             desestruturado = util.desestrutura_r(binario)
-            print(desestruturado)
             indice = mips.functions[opcode[1]](desestruturado['rd'], desestruturado['rs1'], desestruturado['rs2'])
         if opcode[0] == 'J':
             desestruturado = util.desestrutura_j(binario)
@@ -52,10 +52,15 @@ def instructions():
         if opcode[0] == 'I':
             desestruturado = util.desestrutura_i(binario)
             indice = mips.opcode[opcode[1]](desestruturado['rs'], desestruturado['rt'], desestruturado['imd'])
+        json_d = json.dumps(out(instructions[instruction]), indent=4)
+        outfile.write(',\n'+json_d)
         instruction += 1
+
         if indice is not None:
             instruction = indice
-        # print(util.hex2bin(instruction))
+    print(mips.registradores)
+    print(mips.memoria)
+
 
 
 def execute():
@@ -66,5 +71,15 @@ def execute():
     instructions()
 
 
+def out(hexa):
+    return {
+        "hex": hexa,
+        "text": "",
+        "regs": {'$'+str(x): v for x, v in mips.registradores.items() if v != 0 and v != "00000000"},
+        "mem": {x: v for x, v in mips.memoria.items() if v != 0 and v != "00000000"},
+        "stdout": ""
+
+    }
+
+
 execute()
-print(mips.registradores)
