@@ -219,7 +219,7 @@ def srav(rd, rs1, rs2):
     rd = util.bin2dec(rd)
     rs1 = util.bin2dec(rs1)
     rs2 = util.bin2dec(rs2)
-    if registradores[rs2] >> [rs2]:
+    if registradores[rs2] >> registradores[rs1]:
         registradores[rd] = 1
     return None
 
@@ -429,9 +429,8 @@ def read_char():
 
 
 def print_char():
-    print(util.hex2ascii(registradores[4])
+    print(util.hex2ascii(registradores[4]))
     return None
-
 
 
 def exit_program():
@@ -459,7 +458,7 @@ syscalls = {
     10: exit_program,
     14: close_file,
     13: open_file,
-    8: read_string
+    8: read_string,
     12: read_char,
     11: print_char
 }
