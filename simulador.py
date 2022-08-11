@@ -5,7 +5,7 @@ import mips
 
 import dearpygui.dearpygui as dpg
 
-
+open('saida.json', 'w').close()
 outfile = open('saida.json', 'a')
 
 
@@ -118,7 +118,7 @@ def execute():
 def out(hexa):
     return {
         "hex": hexa,
-        "text": "",
+        "text": util.hex2bin(hexa),
         "regs": {'$'+str(x): v for x, v in mips.registradores.items() if v != 0 and v != "00000000"},
         "mem": {x: v for x, v in mips.memoria.items() if v != 0 and v != "00000000"},
         "stdout": ""
