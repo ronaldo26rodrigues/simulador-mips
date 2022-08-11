@@ -3,6 +3,7 @@ import sys
 
 import util
 
+
 registradores = {
     0:  0,
     1:  '00000000',

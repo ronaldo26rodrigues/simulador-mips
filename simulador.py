@@ -1,15 +1,57 @@
+import itertools
 import json
 import util
 import mips
 
-json_arq = open('teste_mips.json', 'r').read()
+import dearpygui.dearpygui as dpg
 
-data = json.loads(json_arq)
-
-print(data)
 
 outfile = open('saida.json', 'a')
 
+
+def load_arch(filename):
+    global json_arq, data
+    json_arq = open(filename, 'r').read()
+    data = json.loads(json_arq)
+    dpg.delete_item('archjson')
+    dpg.delete_item('abrirarq')
+
+    execute()
+
+
+dpg.create_context()
+dpg.create_viewport()
+dpg.setup_dearpygui()
+
+with dpg.window(label='MIPS', tag='window'):
+    dpg.add_input_text(label='Arquivo json', tag='archjson')
+    dpg.add_button(label='Abrir arquivo', callback=lambda: load_arch(dpg.get_value('archjson')), tag='abrirarq')
+
+
+    def add_table():
+        try:
+            dpg.delete_item('table')
+        except:
+            pass
+        with dpg.table(label='Registradores', parent='window', tag='table'):
+            dpg.add_table_column(label="Registradores")
+            dpg.add_table_column(label="Memoria")
+
+            for reg, mem in itertools.zip_longest(mips.registradores.items(), mips.memoria.items()):
+                with dpg.table_row():
+                    dpg.add_text(f"{reg}")
+                    dpg.add_text(f"{mem}")
+
+texto = ''
+def mod_txt(txt):
+    texto = txt
+
+def inpt():
+    dpg.add_input_text(label='Console', parent='window', tag='console')
+    dpg.add_button(label='Enviar', parent='window', callback=lambda : mod_txt(dpg.get_value('console')), tag='consolebt')
+    dpg.delete_item('console')
+    dpg.delete_item('consolebt')
+    return texto
 
 def config_regs():
     regs = data['config']['regs']
@@ -53,13 +95,15 @@ def instructions():
             desestruturado = util.desestrutura_i(binario)
             indice = mips.opcode[opcode[1]](desestruturado['rs'], desestruturado['rt'], desestruturado['imd'])
         json_d = json.dumps(out(instructions[instruction]), indent=4)
-        outfile.write(',\n'+json_d)
+        outfile.write(json_d+',\n')
         instruction += 1
-
+        add_table()
         if indice is not None:
             instruction = indice
     print(mips.registradores)
     print(mips.memoria)
+
+
 
 
 
@@ -82,4 +126,6 @@ def out(hexa):
     }
 
 
-execute()
+dpg.show_viewport()
+dpg.start_dearpygui()
+dpg.destroy_context()
