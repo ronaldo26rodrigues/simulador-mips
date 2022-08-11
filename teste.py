@@ -53,3 +53,6 @@ N = "110000011010010011"  # str of ieee-745 bits
 print( ieee745(N)  )  # -->  -20.59375
 
 print(float_to_bin(10293789124142343428374274873917237.27))
+
+print(list(mips.registradores.keys())[2])
+print(mips.opcode['001000'].__name__)

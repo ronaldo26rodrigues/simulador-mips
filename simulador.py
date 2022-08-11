@@ -8,7 +8,7 @@ import dearpygui.dearpygui as dpg
 open('saida.json', 'w').close()
 outfile = open('saida.json', 'a')
 
-
+# carrega o arquivo json de entrada
 def load_arch(filename):
     global json_arq, data
     json_arq = open(filename, 'r').read()
@@ -23,6 +23,8 @@ dpg.create_context()
 dpg.create_viewport()
 dpg.setup_dearpygui()
 
+
+# interface dearpy
 with dpg.window(label='MIPS', tag='window'):
     dpg.add_input_text(label='Arquivo json', tag='archjson')
     dpg.add_button(label='Abrir arquivo', callback=lambda: load_arch(dpg.get_value('archjson')), tag='abrirarq')
@@ -40,18 +42,9 @@ with dpg.window(label='MIPS', tag='window'):
             for reg, mem in itertools.zip_longest(mips.registradores.items(), mips.memoria.items()):
                 with dpg.table_row():
                     dpg.add_text(f"{reg}")
-                    dpg.add_text(f"{mem}")
+                    if mem is not None:
+                        dpg.add_text(f"{mem}")
 
-texto = ''
-def mod_txt(txt):
-    texto = txt
-
-def inpt():
-    dpg.add_input_text(label='Console', parent='window', tag='console')
-    dpg.add_button(label='Enviar', parent='window', callback=lambda : mod_txt(dpg.get_value('console')), tag='consolebt')
-    dpg.delete_item('console')
-    dpg.delete_item('consolebt')
-    return texto
 
 def config_regs():
     regs = data['config']['regs']
@@ -64,7 +57,10 @@ def config_regs():
 
 # TODO: logica de configurar memória
 def config_mem():
-    pass
+    d = data['config']['mem']
+    for dt in d:
+        mips.memoria[dt] = d[dt]
+    print(mips.memoria)
 
 
 # TODO: logica de configurar .data
@@ -75,7 +71,7 @@ def config_data():
     print(mips.memoria)
 
 
-# TODO: logica de executar instruções
+#  logica de executar instruções
 def instructions():
     instructions = data['text']
     # for instruction in range(len(instructions)):
@@ -94,7 +90,7 @@ def instructions():
         if opcode[0] == 'I':
             desestruturado = util.desestrutura_i(binario)
             indice = mips.opcode[opcode[1]](desestruturado['rs'], desestruturado['rt'], desestruturado['imd'])
-        json_d = json.dumps(out(instructions[instruction]), indent=4)
+        json_d = json.dumps(out(instructions[instruction]), indent=4) 
         outfile.write(json_d+',\n')
         instruction += 1
         add_table()
