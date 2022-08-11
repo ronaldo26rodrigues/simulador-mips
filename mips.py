@@ -1,6 +1,6 @@
+from ast import Pass
 import codecs
 import sys
-
 import util
 
 
@@ -450,9 +450,15 @@ def open_file():
 def close_file():
     registradores[2].close()
 
+def read_char():
+    registradores[2] = Pass
 
+def print_char():
+    print(Pass(registradores[4]))
 
-
+def print_double():
+    print(Pass(registradores[12]))
+    
 syscalls = {
     1: print_integer,
     4: print_string,
